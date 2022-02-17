@@ -15,6 +15,7 @@ public class CajonCalcetin {
 
     //ArrayList donde se guardan todos los calcetines aleatorios
     ArrayList<Calcetin> lista;
+    ArrayList<Calcetin> listaIndividuales;
     ArrayList<Calcetin> listaEmparejados;
     Calcetin[] calcetinesSolitarios;
     //Lo usaremos para que el tamaño sea aleatorio entre otros casos
@@ -37,6 +38,16 @@ public class CajonCalcetin {
         for (int i = 0; i < tamanioArray; i++) {
             //Lo que hacemos aquí es que según el tamaño aleatorio que ha salido le añadimos un calcetin creado de forma aleatoria
             lista.add(new Calcetin());
+        }
+        return lista;
+
+    }
+
+    private ArrayList<Calcetin> rellenarSolitario() {
+        for (int i = 0; i < lista.size(); i++) {
+            if (listaEmparejados.contains(lista.get(i))) {
+                lista.remove(i);
+            }
         }
         return lista;
 
@@ -93,40 +104,14 @@ public class CajonCalcetin {
 
                 listaEmparejados.add(lista.get(i));
                 listaEmparejados.add(lista.get(n));
-                //Al ser pareja lo tenemos que eliminar de la lista inicial
-                try {
-                    lista.remove(i);
-                    lista.remove(n);
-                } catch (IndexOutOfBoundsException iobe) {
-                    System.out.println("\n");
-                }
+                lista.set(i, null);
+                lista.set(n, null);
 
                 //Pasamos al siguiente calcetín
                 n++;
             }
         }
-        n = 0;
-        //Para asegurarnos de que no hay niguna pareja(porque en el primer for se me escapaba alguno en ocasiones)
-        for (int i = 0; i < lista.size(); i++) {
-
-            //Comparamos talla y color
-            if (lista.get(i).equals(lista.get(n))) {
-
-                listaEmparejados.add(lista.get(i));
-                listaEmparejados.add(lista.get(n));
-                //Al ser pareja lo tenemos que eliminar de la lista inicial
-                try {
-                    lista.remove(i);
-                    lista.remove(n);
-                } catch (IndexOutOfBoundsException iobe) {
-                    System.out.println("\n");
-                }
-
-                //Pasamos al siguiente calcetín
-                n++;
-            }
-        }
-
+        rellenarSolitario();
         System.out.println("---------MOSTRAMOS LOS EMPAREJADOS--------");
         imprimirEmparejados();
         devolverArrayCalcetines();
